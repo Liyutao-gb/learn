@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lyt.learn.dao.WordMapper">
+	<resultMap id="BaseResultMap" type="com.lyt.learn.model.Word">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<result column="contentValue" property="values" jdbcType="VARCHAR" />
+		<result column="sentence" property="sentence" jdbcType="VARCHAR" />
+		<result column="belongTo" property="belongTo" jdbcType="VARCHAR" />
+		<result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		id, content, contentValue, sentence, belongTo, createTime
+	</sql>
+	
+	<select id="searchWord" resultMap="BaseResultMap"
+		parameterType="com.lyt.learn.model.Word">
+		select
+		<include refid="Base_Column_List" />
+		from word
+	</select>
+	
+	<select id="searchWordById" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from word
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	
+	<delete id="deleteWord" parameterType="java.lang.Integer">
+		delete from word
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	
+	<insert id="saveWord" parameterType="com.lyt.learn.model.Word">
+		insert into word (content, contentValue, sentence, belongTo)
+		values (
+		#{content,jdbcType=VARCHAR},
+		#{values,jdbcType=VARCHAR},
+		#{sentence,jdbcType=VARCHAR},
+		#{belongTo,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<update id="updateWord" parameterType="map">
+		update word
+		set 
+		content = #{word.content,jdbcType=VARCHAR},
+		contentValue = #{word.values,jdbcType=VARCHAR},
+		sentence = #{word.sentence,jdbcType=VARCHAR},
+		belongTo = #{word.belongTo,jdbcType=VARCHAR}
+		where id = #{word.id,jdbcType=INTEGER}
+	</update>
+</mapper>
